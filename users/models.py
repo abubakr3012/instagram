@@ -11,7 +11,7 @@ class User(AbstractUser):
 
 class Profile(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
-    image=models.ImageField(upload_to='profile_image/',blank=True,null=True)
+    image=models.ImageField(upload_to='media/profile_image/',blank=True,null=True)
     follower_cnt=models.PositiveIntegerField(default=0)
     following_cnt=models.PositiveIntegerField(default=0)
     videos_cnt=models.PositiveIntegerField(default=0)
