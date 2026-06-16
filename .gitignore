@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Django
+media/
+staticfiles/
+*.sqlite3
+
+# Видео/фото
+*.mp4
+*.mov
+*.avi
+*.jpg
+*.jpeg
+*.png
+
+# IDE
+.vscode/
+.idea/
