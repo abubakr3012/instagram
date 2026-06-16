@@ -9,7 +9,7 @@ class Stories(models.Model):
         User,
         on_delete=models.CASCADE,default=1
     )
-    file = models.FileField(upload_to='stories/')
+    file = models.FileField(upload_to='media/stories/')
     created_at = models.DateTimeField(auto_now_add=True)
     expires_at = models.DateTimeField()
 
