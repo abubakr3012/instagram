@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
+from .views import FeedView
 
 urlpatterns = [
-    
+    path('', FeedView.as_view(), name='feed'),
 ]

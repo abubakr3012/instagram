@@ -24,7 +24,8 @@ class CommentListCreateView(generics.ListCreateAPIView):
         )
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        video_id = self.kwargs['video_id']
+        serializer.save(user=self.request.user, video_id=video_id)
 
 
 class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -62,16 +63,30 @@ class VideoLikeToggleView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, video_id):
+        from videos.models import Videos
+        video = get_object_or_404(Videos, pk=video_id, is_deleted=False)
         like, created = Like.objects.get_or_create(
-            user=request.user, video_id=video_id
+            user=request.user, video=video
         )
         if not created:
             like.delete()
+            video.likes_cnt = Like.objects.filter(video=video).count()
+            video.save(update_fields=['likes_cnt'])
             return Response(
-                {"detail": "Лайк снят."},
+                {
+                    'detail': 'Лайк снят.',
+                    'is_liked': False,
+                    'likes_count': video.likes_cnt,
+                },
                 status=status.HTTP_200_OK,
             )
+        video.likes_cnt = Like.objects.filter(video=video).count()
+        video.save(update_fields=['likes_cnt'])
         return Response(
-            {"detail": "Лайк поставлен."},
+            {
+                'detail': 'Лайк поставлен.',
+                'is_liked': True,
+                'likes_count': video.likes_cnt,
+            },
             status=status.HTTP_201_CREATED,
         )
